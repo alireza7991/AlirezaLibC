@@ -1,0 +1,12 @@
+# objects
+src/*/*.o
+src/*/*.lo
+lib/*
+arch/arm/src/*.o
+arch/arm/src/*.lo
+build/*
+crt/*.o
+crt/arm/*.o
+# release files
+*.tar
+*.tar.gz
