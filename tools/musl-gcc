@@ -1,0 +1,2 @@
+#!/bin/sh
+exec arm-linux-gnueabi-gcc "$@" -specs "build/lib/musl-gcc.specs"
