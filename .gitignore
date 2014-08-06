@@ -1,8 +1,10 @@
 # objects
 src/*/*.o
 src/*/*.lo
-lib/*
-!lib/
+lib/*.a
+lib/*.so
+lib/*.specs
+lib/*.o
 arch/arm/src/*.o
 arch/arm/src/*.lo
 build/*
@@ -13,3 +15,5 @@ crt/arm/*.o
 *.tar.gz
 # config files
 .config*
+# gcc
+tools/alireza-gcc

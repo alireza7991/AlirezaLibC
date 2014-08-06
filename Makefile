@@ -42,9 +42,9 @@ EMPTY_LIBS = $(EMPTY_LIB_NAMES:%=lib/lib%.a)
 CRT_LIBS = lib/crt1.o lib/Scrt1.o lib/crti.o lib/crtn.o
 STATIC_LIBS = lib/libc.a
 SHARED_LIBS = lib/libc.so
-TOOL_LIBS = lib/musl-gcc.specs
+TOOL_LIBS = lib/alireza-gcc.specs
 ALL_LIBS = $(CRT_LIBS) $(STATIC_LIBS) $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
-ALL_TOOLS = tools/musl-gcc
+ALL_TOOLS = tools/alireza-gcc
 
 LDSO_PATHNAME = $(syslibdir)/ld-alireza-$(ARCH)$(SUBARCH).so.1
 
@@ -145,13 +145,13 @@ lib/%.o: crt/%.o
 	@echo "\tCP " $< $@
 	@cp $< $@
 
-lib/musl-gcc.specs: tools/musl-gcc.specs.sh
+lib/alireza-gcc.specs: tools/alireza-gcc.specs.sh
 	@echo "\tGEN " $@
 	@sh $< "$(includedir)" "$(libdir)" "$(LDSO_PATHNAME)" > $@
 
-tools/musl-gcc:
+tools/alireza-gcc:
 	@echo "\tGEN " $@
-	@printf '#!/bin/sh\nexec' $(ALC_CROSS_PREFIX)gcc '"$$@" -specs "%s/musl-gcc.specs"\n' "$(libdir)" > $@
+	@printf '#!/bin/sh\nexec %s "$$@" -specs "%s/alireza-gcc.specs"\n' $(ALC_CROSS_PREFIX) "$(libdir)" > $@
 	@chmod +x $@
 	@export PATH=${PATH}:$(bindir)
 
