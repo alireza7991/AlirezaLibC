@@ -151,7 +151,7 @@ lib/musl-gcc.specs: tools/musl-gcc.specs.sh
 
 tools/musl-gcc:
 	@echo "\tGEN " $@
-	@printf '#!/bin/sh\nexec arm-linux-gnueabi-gcc "$$@" -specs "%s/musl-gcc.specs"\n' "$(libdir)" > $@
+	@printf '#!/bin/sh\nexec' $(ALC_CROSS_PREFIX)gcc '"$$@" -specs "%s/musl-gcc.specs"\n' "$(libdir)" > $@
 	@chmod +x $@
 	@export PATH=${PATH}:$(bindir)
 
