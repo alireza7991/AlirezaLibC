@@ -1,12 +1,18 @@
+-include .config
 
-VERSION=1.0
 ARCH = arm
+SUBARCH = 
+ASMSUBARCH = el
+
+
 exec_prefix = /usr/local
 bindir = $(exec_prefix)/bin
 
-prefix = /usr/local/musl
-includedir = $(prefix)/include
+prefix = build
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
 libdir = $(prefix)/lib
+includedir = $(prefix)/include
 syslibdir = /lib
 
 SRCS = $(sort $(wildcard src/*/*.c arch/$(ARCH)/src/*.c))
@@ -15,11 +21,6 @@ LOBJS = $(OBJS:.o=.lo)
 GENH = include/bits/alltypes.h
 GENH_INT = src/internal/version.h
 IMPH = src/internal/stdio_impl.h src/internal/pthread_impl.h src/internal/libc.h
-
-LDFLAGS = 
-LIBCC = -lgcc
-CPPFLAGS =
-CFLAGS = -Os -pipe
 CFLAGS_C99FSE = -std=c99 -ffreestanding -nostdinc 
 
 CFLAGS_ALL = $(CFLAGS_C99FSE)
@@ -28,8 +29,8 @@ CFLAGS_ALL += $(CPPFLAGS) $(CFLAGS)
 CFLAGS_ALL_STATIC = $(CFLAGS_ALL)
 CFLAGS_ALL_SHARED = $(CFLAGS_ALL) -fPIC -DSHARED
 
-AR      = $(CROSS_COMPILE)ar
-RANLIB  = $(CROSS_COMPILE)ranlib
+AR      = $(ALC_CROSS_PREFIX)ar
+RANLIB  = $(ALC_CROSS_PREFIX)ranlib
 
 INSTALL = ./tools/install.sh
 
@@ -45,23 +46,13 @@ TOOL_LIBS = lib/musl-gcc.specs
 ALL_LIBS = $(CRT_LIBS) $(STATIC_LIBS) $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = tools/musl-gcc
 
-LDSO_PATHNAME = $(syslibdir)/ld-musl-$(ARCH)$(SUBARCH).so.1
+LDSO_PATHNAME = $(syslibdir)/ld-alireza-$(ARCH)$(SUBARCH).so.1
 
-SUBARCH = 
-ASMSUBARCH = el
-prefix = build
-exec_prefix = $(prefix)
-bindir = $(exec_prefix)/bin
-libdir = $(prefix)/lib
-includedir = $(prefix)/include
-syslibdir = /lib
-CC = arm-linux-gnueabi-gcc
+CC = $(ALC_CROSS_PREFIX)gcc
 CFLAGS = -Os -pipe -fomit-frame-pointer -fno-unwind-tables -fno-asynchronous-unwind-tables -Wa,--noexecstack -Werror=implicit-function-declaration -Werror=implicit-int -Werror=pointer-sign -Werror=pointer-arith -fno-stack-protector 
 CFLAGS_C99FSE = -std=c99 -nostdinc -ffreestanding -fexcess-precision=standard -frounding-math
 CFLAGS_MEMOPS = -fno-tree-loop-distribute-patterns
-CPPFLAGS = 
-LDFLAGS = -Wl,--hash-style=both 
-CROSS_COMPILE = 
+LDFLAGS = -Wl,--hash-style=both
 LIBCC = -lgcc -lgcc_eh
 OPTIMIZE_GLOBS = internal/*.c malloc/*.c string/*.c
 
@@ -79,11 +70,7 @@ clean:
 	rm -f $(GENH) $(GENH_INT)
 	rm -f include/bits
 
-distclean: clean
-	rm -f config.mak
-
 include/bits:
-	@test "$(ARCH)" || { echo "Please set ARCH in config.mak before running make." ; exit 1 ; }
 	@ln -sf ../arch/$(ARCH)/bits $@
 
 include/bits/alltypes.h.in: include/bits
@@ -167,6 +154,14 @@ tools/musl-gcc:
 	@printf '#!/bin/sh\nexec arm-linux-gnueabi-gcc "$$@" -specs "%s/musl-gcc.specs"\n' "$(libdir)" > $@
 	@chmod +x $@
 	@export PATH=${PATH}:$(bindir)
+
+%_defconfig:
+	@echo "* Loading default configurations of " $@
+	@cp configs/$@ .config
+
+menuconfig:
+	@./tools/mconf Main.conf
+
 $(DESTDIR)$(bindir)/%: tools/%
 	@$(INSTALL) -D $< $@
 

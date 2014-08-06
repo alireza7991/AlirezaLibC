@@ -1,0 +1,11 @@
+#
+# Automatically generated file; DO NOT EDIT.
+# AlirezaLibC Configuration Menu
+#
+
+#
+# Build Setting
+#
+VERSION="1.0"
+ALC_CROSS_PREFIX="arm-linux-gnueabi-"
+ALC_OPTIMIZE_FLAG="-Os"

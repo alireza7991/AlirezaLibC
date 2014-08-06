@@ -10,3 +10,5 @@ crt/arm/*.o
 # release files
 *.tar
 *.tar.gz
+# config files
+.config*
