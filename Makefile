@@ -151,7 +151,7 @@ lib/alireza-gcc.specs: tools/alireza-gcc.specs.sh
 
 tools/alireza-gcc:
 	@echo "\tGEN " $@
-	@printf '#!/bin/sh\nexec %s "$$@" -specs "%s/alireza-gcc.specs"\n' $(ALC_CROSS_PREFIX) "$(libdir)" > $@
+	@printf '#!/bin/sh\nexec %sgcc "$$@" -specs "%s/alireza-gcc.specs"\n' $(ALC_CROSS_PREFIX) "$(libdir)" > $@
 	@chmod +x $@
 	@export PATH=${PATH}:$(bindir)
 
