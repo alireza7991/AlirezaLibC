@@ -1,7 +1,9 @@
-#include <unistd.h>
-#include "syscall.h"
+#include <CAsm.h>
 
 int fsync(int fd)
 {
-	return syscall(SYS_fsync, fd);
+	casm_start
+		mov(r7,"#118")
+		swi()
+	casm_end
 }
