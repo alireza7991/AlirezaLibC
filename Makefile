@@ -25,7 +25,7 @@ CFLAGS_C99FSE = -std=c99 -ffreestanding -nostdinc
 
 CFLAGS_ALL = $(CFLAGS_C99FSE)
 CFLAGS_ALL += -D_XOPEN_SOURCE=700 -I./arch/$(ARCH) -I./src/internal -I./include
-CFLAGS_ALL += $(CPPFLAGS) $(CFLAGS)
+CFLAGS_ALL += $(CPPFLAGS) $(CFLAGS) $(ALC_OPTIMIZE_FLAG)
 CFLAGS_ALL_STATIC = $(CFLAGS_ALL)
 CFLAGS_ALL_SHARED = $(CFLAGS_ALL) -fPIC -DSHARED
 
@@ -49,7 +49,7 @@ ALL_TOOLS = tools/alireza-gcc
 LDSO_PATHNAME = $(syslibdir)/ld-alireza-$(ARCH)$(SUBARCH).so.1
 
 CC = $(ALC_CROSS_PREFIX)gcc
-CFLAGS = -Os -pipe -fomit-frame-pointer -fno-unwind-tables -fno-asynchronous-unwind-tables -Wa,--noexecstack -Werror=implicit-function-declaration -Werror=implicit-int -Werror=pointer-sign -Werror=pointer-arith -fno-stack-protector 
+CFLAGS = $(ALC_OPTIMIZE_FLAG) -pipe -fomit-frame-pointer -fno-unwind-tables -fno-asynchronous-unwind-tables -Wa,--noexecstack -Werror=implicit-function-declaration -Werror=implicit-int -Werror=pointer-sign -Werror=pointer-arith -fno-stack-protector 
 CFLAGS_C99FSE = -std=c99 -nostdinc -ffreestanding -fexcess-precision=standard -frounding-math
 CFLAGS_MEMOPS = -fno-tree-loop-distribute-patterns
 LDFLAGS = -Wl,--hash-style=both
