@@ -39,22 +39,22 @@
 // simple cmp
 #define cmp(x,y) "cmp " x "," y "\n"
 // cmp with condition support
-#define cmp(w,x,y) "cmp" w " " x "," y "\n"
+#define icmp(w,x,y) "cmp" w " " x "," y "\n"
 
 // simple cmn
 #define cmn(x,y) "cmn " x "," y "\n"
 // cmn with condition support
-#define cmn(w,x,y) "cmn" w " " x "," y "\n"
+#define icmn(w,x,y) "cmn" w " " x "," y "\n"
 
 // simple tst
 #define tst(x,y) "tst " x "," y "\n"
 // tst with condition support
-#define tst(w,x,y) "tst" w " " x "," y "\n"
+#define itst(w,x,y) "tst" w " " x "," y "\n"
 
 
 // simple teq
 #define teq(x,y) "teq " x "," y "\n"
 // teq with condition support
-#define teq(w,x,y) "teq" w " " x "," y "\n"
+#define iteq(w,x,y) "teq" w " " x "," y "\n"
 
 
